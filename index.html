@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seu Sábado Secreto ✨</title>
+<meta name="referrer" content="no-referrer">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0a0e;
+    --bg2: #13101a;
+    --bg3: #1a1525;
+    --gold: #c9a84c;
+    --gold2: #e8c97a;
+    --gold3: #f5e2a8;
+    --rose: #c4728a;
+    --rose2: #e8a0b5;
+    --text: #f0e6d3;
+    --text-dim: #9b8a78;
+    --border: rgba(201,168,76,0.25);
+    --border-strong: rgba(201,168,76,0.5);
+    --card-bg: rgba(26,21,37,0.95);
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(201,168,76,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 90%, rgba(196,114,138,0.06) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+  .wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+    position: relative;
+    z-index: 1;
+  }
+  .header {
+    text-align: center;
+    padding: 52px 20px 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+    animation: fadeDown 1s ease both;
+  }
+  .header-ornament {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    color: var(--gold);
+    letter-spacing: 8px;
+    margin-bottom: 16px;
+    opacity: 0.7;
+  }
+  .header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(22px, 6vw, 34px);
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--gold3);
+    line-height: 1.3;
+    margin-bottom: 18px;
+  }
+  .header p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(15px, 4vw, 18px);
+    color: var(--text-dim);
+    line-height: 1.7;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+  .progress-bar-wrap {
+    margin: 0 0 40px;
+    animation: fadeUp 1s ease 0.3s both;
+  }
+  .progress-label {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .progress-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  .dot {
+    width: 28px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.2);
+    transition: background 0.5s ease, box-shadow 0.5s ease;
+  }
+  .dot.unlocked {
+    background: linear-gradient(90deg, var(--gold), var(--gold2));
+    box-shadow: 0 0 8px rgba(201,168,76,0.5);
+  }
+  .dot.active {
+    background: linear-gradient(90deg, var(--rose), var(--rose2));
+    box-shadow: 0 0 8px rgba(196,114,138,0.6);
+  }
+  .day-sep {
+    text-align: center;
+    margin: 48px 0;
+    animation: fadeIn 0.8s ease both;
+  }
+  .day-sep-line {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .day-sep-line::before,
+  .day-sep-line::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .day-sep-icon { font-size: 22px; }
+  .day-sep-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(18px, 5vw, 24px);
+    letter-spacing: 4px;
+    color: var(--gold3);
+  }
+  .day-sep-msg {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(14px, 3.5vw, 16px);
+    color: var(--text-dim);
+    max-width: 380px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+  .step-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    margin-bottom: 24px;
+    transition: border-color 0.3s;
+    animation: fadeUp 0.6s ease both;
+    display: none;
+  }
+  .step-card.visible { display: block; }
+  .step-card.solved { border-color: rgba(201,168,76,0.4); }
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .step-num {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    background: rgba(201,168,76,0.08);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .step-day {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--rose);
+    text-transform: uppercase;
+  }
+  .step-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(18px, 5vw, 22px);
+    color: var(--gold3);
+    flex: 1;
+  }
+  .clues-area { margin-bottom: 20px; }
+  .clue {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+    animation: fadeIn 0.5s ease both;
+  }
+  .clue-num {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    color: var(--gold);
+    background: rgba(201,168,76,0.1);
+    border: 1px solid var(--border);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .clue-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(15px, 4vw, 17px);
+    color: var(--text);
+    line-height: 1.65;
+    font-style: italic;
+  }
+  .btn-more-clue {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .btn-more-clue:hover {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.08);
+  }
+  .guess-area { margin-top: 4px; }
+  .guess-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .guess-row { display: flex; gap: 8px; }
+  .guess-input {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    min-width: 0;
+  }
+  .guess-input:focus { border-color: var(--gold2); }
+  .guess-input.shake { animation: shake 0.4s ease; }
+  .btn-guess {
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    border: none;
+    color: #1a1200;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    white-space: nowrap;
+  }
+  .btn-guess:hover { opacity: 0.9; }
+  .btn-guess:active { transform: scale(0.97); }
+  .guess-feedback {
+    margin-top: 8px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    min-height: 22px;
+  }
+  .guess-feedback.error { color: var(--rose2); }
+  .guess-feedback.success { color: var(--gold2); }
+  .reveal-card {
+    margin-top: 20px;
+    background: rgba(201,168,76,0.04);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+    animation: revealIn 0.7s ease both;
+    display: none;
+  }
+  .reveal-card.shown { display: block; }
+  .reveal-photo-wrap {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background: var(--bg3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media (min-width: 480px) { .reveal-photo-wrap { height: 250px; } }
+  .reveal-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0;
+    filter: blur(12px);
+    transition: opacity 0.9s ease, filter 0.9s ease;
+  }
+  .reveal-photo.loaded {
+    opacity: 1;
+    filter: blur(0);
+  }
+  .photo-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1525, #1e1828);
+  }
+  .photo-fallback span {
+    font-family: 'Cinzel', serif;
+    color: var(--gold);
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-align: center;
+    padding: 20px;
+  }
+  .reveal-body { padding: 20px 22px; }
+  .reveal-name {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(16px, 4.5vw, 20px);
+    color: var(--gold3);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .reveal-info {
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+    line-height: 1.8;
+    margin-bottom: 14px;
+  }
+  .reveal-msg {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(15px, 4vw, 17px);
+    color: var(--rose2);
+    line-height: 1.65;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .btn-next {
+    display: block;
+    width: 100%;
+    margin-top: 18px;
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--gold2);
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    padding: 14px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+  .btn-next:hover {
+    background: rgba(201,168,76,0.08);
+    border-color: var(--gold2);
+  }
+  .final-msg {
+    text-align: center;
+    padding: 48px 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: rgba(201,168,76,0.03);
+    margin-top: 40px;
+    animation: revealIn 1s ease both;
+    display: none;
+  }
+  .final-msg.shown { display: block; }
+  .final-ornament { font-size: 36px; margin-bottom: 20px; }
+  .final-msg p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(16px, 4.5vw, 20px);
+    color: var(--text);
+    line-height: 1.8;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+  #confetti-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 999;
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes revealIn {
+    from { opacity: 0; transform: scale(0.97); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+  }
+  @keyframes goldGlow {
+    0%, 100% { box-shadow: 0 0 10px rgba(201,168,76,0.3); }
+    50% { box-shadow: 0 0 30px rgba(201,168,76,0.7); }
+  }
+  .step-card.solving { animation: goldGlow 0.6s ease; }
+</style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+<div class="wrapper">
+  <div class="header">
+    <div class="header-ornament">✦ ✦ ✦</div>
+    <h1>Nathalia,<br>seu sábado<br>começa agora...</h1>
+    <p>Cada etapa é um enigma. Descubra o destino antes de chegarmos. Deixe o mistério te guiar.</p>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-label" id="progress-label">Etapa 0 de 4 desbloqueada</div>
+    <div class="progress-dots" id="progress-dots">
+      <div class="dot active" id="dot-0"></div>
+      <div class="dot" id="dot-1"></div>
+      <div class="dot" id="dot-2"></div>
+      <div class="dot" id="dot-3"></div>
+    </div>
+  </div>
+  <div id="steps-container"></div>
+  <div class="final-msg" id="final-msg">
+    <div class="final-ornament">❤️</div>
+    <p>Esse sábado foi montado pensando em cada detalhe para você. Do café da manhã francês ao forró no parque, e uma janta quentinha pra fechar a noite. Cada momento foi escolhido para a gente viver junto. Obrigado por ser a melhor companhia. Te amo. ❤️</p>
+  </div>
+</div>
+
+<script>
+const steps = [
+  {
+    id: 0,
+    day: 'Sábado',
+    name: 'Rendez-Vous',
+    clues: [
+      'Nosso primeiro destino nasceu no idioma do amor... e seu nome é literalmente um convite para nos encontrarmos.',
+      'Fica em Pinheiros, numa rua que leva o nome de um visconde. Croissants e ovos beneditinos te esperam.',
+      'Brunch francês aos sábados, a partir das 9h. O nome do lugar é o que dois amantes dizem quando marcam de se ver.'
+    ],
+    accepted: ['rendez-vous','rendezvous','rendez vous'],
+    info: 'R. Fradique Coutinho, 179 — Pinheiros · Reservar: (11) 2539-8497 · Sábado 9h–11h',
+    msg: 'Café, croissant, você. O melhor começo de sábado que eu poderia imaginar.',
+    photo: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80'
+  },
+  {
+    id: 1,
+    day: 'Sábado',
+    name: 'Livraria da Tarde & Cafeteria Selo Verde',
+    clues: [
+      'Depois do brunch, vamos a um lugar onde as histórias moram nas estantes e o café mora dentro delas. Literalmente.',
+      'Fica a 10 minutos a pé do brunch, na rua de um cônego. O café aqui dentro tem nota 5.0 e o croissant já foi chamado de "melhor da vida".',
+      'Uma livraria com cafeteria dentro. O nome dela sugere que o melhor momento para ler é quando o sol já passou do meio.'
+    ],
+    accepted: ['livraria da tarde','selo verde','cafeteria selo verde','livraria tarde'],
+    info: 'R. Cônego Eugênio Leite, 956 — Pinheiros · Cafeteria Selo Verde dentro da livraria · Sábado 10h–18h',
+    msg: 'Livros, café e você do meu lado. Perfeito.',
+    photo: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&q=80'
+  },
+  {
+    id: 2,
+    day: 'Sábado',
+    name: 'Parque Villa-Lobos — Arraial',
+    clues: [
+      'Agora a vibe muda completamente. Sanfona, forró e bandeirinhas. Junho pede isso.',
+      'É o maior parque da zona oeste de SP, e nessa época do ano ele se transforma num arraial gigante. Entrada gratuita.',
+      'O nome do parque homenageia o maior compositor clássico brasileiro. E hoje, ele troca a orquestra pelo triângulo e zabumba.'
+    ],
+    accepted: ['villa-lobos','villa lobos','villalobos','parque villa-lobos','parque villa lobos','arraial'],
+    info: 'Av. Prof. Fonseca Rodrigues, 2001 — Alto de Pinheiros · Entrada gratuita · Arraial do Forró ao vivo',
+    msg: 'Me arrasta pra dançar mesmo que eu pise no seu pé. 🌽',
+    photo: 'https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800&q=80'
+  },
+  {
+    id: 3,
+    day: 'Sábado',
+    name: 'Jantar em Casa 🏠',
+    clues: [
+      'O último destino do dia não tem endereço no Google Maps. É o lugar mais quentinho que existe — e eu já sei o caminho.',
+      'Enquanto você curtia o dia, eu guardei um segredo na panela. Velas, música baixa e um prato feito com as minhas mãos só pra você.',
+      'É uma sopa cremosa, de origem francesa, feita com cebolas carameladas lentamente até ficarem doces. Clássica, reconfortante, perfeita para o frio de junho. Qual é esse prato?'
+    ],
+    accepted: ['creme de cebola','sopa de cebola','soupe à l\'oignon','soupe a l\'oignon','sopa cebola','cebola','french onion soup','onion soup'],
+    info: 'Em casa — com velas, música e muito carinho · Jantinha feita por mim, só pra você 🕯️',
+    msg: 'O melhor restaurante da cidade não tem cardápio. Tem só você e eu.',
+    photo: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=800&q=80'
+  }
+];
+
+function normalize(s) {
+  return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+}
+
+function checkAnswer(input, accepted) {
+  const n = normalize(input);
+  if (n === normalize('MelhorDateSurpresa')) return true;
+  return accepted.some(a => n === normalize(a));
+}
+
+const TOTAL = steps.length;
+let solved = Array(TOTAL).fill(false);
+let currentClues = Array(TOTAL).fill(1);
+
+function updateProgress() {
+  const count = solved.filter(Boolean).length;
+  document.getElementById('progress-label').textContent = `Etapa ${count} de ${TOTAL} desbloqueada`;
+  for (let i = 0; i < TOTAL; i++) {
+    const dot = document.getElementById(`dot-${i}`);
+    dot.className = 'dot' + (solved[i] ? ' unlocked' : (i === count ? ' active' : ''));
+  }
+}
+
+function loadPhoto(stepId) {
+  const step = steps[stepId];
+  const photoEl = document.getElementById(`photo-${stepId}`);
+  const fallbackEl = document.getElementById(`fallback-${stepId}`);
+
+  photoEl.onload = () => {
+    fallbackEl.style.display = 'none';
+    photoEl.classList.add('loaded');
+  };
+  photoEl.onerror = () => {
+    photoEl.style.display = 'none';
+    fallbackEl.style.display = 'flex';
+  };
+  // forçar sem referrer para não bloquear
+  photoEl.setAttribute('referrerpolicy', 'no-referrer');
+  photoEl.src = step.photo;
+}
+
+function renderStep(step) {
+  const card = document.createElement('div');
+  card.className = 'step-card';
+  card.id = `step-${step.id}`;
+
+  const cluesHtml = step.clues.map((c, i) => `
+    <div class="clue" id="clue-${step.id}-${i}" style="display:${i===0?'flex':'none'}">
+      <div class="clue-num">${i+1}</div>
+      <div class="clue-text">${c}</div>
+    </div>`).join('');
+
+  const isLast = step.id === TOTAL - 1;
+
+  card.innerHTML = `
+    <div class="step-header">
+      <div class="step-num">ETAPA ${step.id+1}</div>
+      <div class="step-day">${step.day}</div>
+      <div class="step-name" id="step-name-${step.id}">✦ &nbsp;?&nbsp; ✦</div>
+    </div>
+    <div class="clues-area">${cluesHtml}</div>
+    <button class="btn-more-clue" id="btn-clue-${step.id}">✦ Próxima dica</button>
+    <div class="guess-area">
+      <span class="guess-label">Seu palpite</span>
+      <div class="guess-row">
+        <input class="guess-input" id="input-${step.id}" type="text" placeholder="Digite aqui..." autocomplete="off" autocorrect="off" spellcheck="false"/>
+        <button class="btn-guess" id="btn-guess-${step.id}">Revelar</button>
+      </div>
+      <div class="guess-feedback" id="feedback-${step.id}"></div>
+    </div>
+    <div class="reveal-card" id="reveal-${step.id}">
+      <div class="reveal-photo-wrap">
+        <img class="reveal-photo" id="photo-${step.id}" src="" alt="Local da surpresa" referrerpolicy="no-referrer" crossorigin="anonymous"/>
+        <div class="photo-fallback" id="fallback-${step.id}"><span>${step.name}</span></div>
+      </div>
+      <div class="reveal-body">
+        <div class="reveal-name" id="reveal-name-${step.id}">${step.name}</div>
+        <div class="reveal-info">${step.info}</div>
+        <div class="reveal-msg">${step.msg}</div>
+      </div>
+    </div>
+    ${!isLast ? `<button class="btn-next" id="btn-next-${step.id}" style="display:none">Próxima etapa →</button>` : ''}
+  `;
+  return card;
+}
+
+function revealStep(stepId) {
+  const step = steps[stepId];
+  const card = document.getElementById(`step-${stepId}`);
+  const reveal = document.getElementById(`reveal-${stepId}`);
+  const nameEl = document.getElementById(`step-name-${stepId}`);
+
+  card.classList.add('solved','solving');
+  reveal.classList.add('shown');
+
+  // revelar nome com fade
+  nameEl.style.transition = 'opacity 0.5s ease';
+  nameEl.style.opacity = '0';
+  setTimeout(() => {
+    nameEl.textContent = step.name;
+    nameEl.style.opacity = '1';
+  }, 300);
+
+  // carregar foto
+  loadPhoto(stepId);
+
+  // ocultar controles
+  document.getElementById(`btn-clue-${stepId}`).style.display = 'none';
+  document.querySelector(`#step-${stepId} .guess-area`).style.display = 'none';
+
+  solved[stepId] = true;
+  updateProgress();
+  launchConfetti();
+
+  if (stepId < TOTAL - 1) {
+    const btnNext = document.getElementById(`btn-next-${stepId}`);
+    if (btnNext) {
+      btnNext.style.display = 'block';
+      btnNext.addEventListener('click', () => showStep(stepId + 1), { once: true });
+    }
+  } else {
+    setTimeout(() => {
+      const fm = document.getElementById('final-msg');
+      fm.classList.add('shown');
+      fm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 800);
+  }
+}
+
+function showStep(id) {
+  const card = document.getElementById(`step-${id}`);
+  card.classList.add('visible');
+  setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+
+  const btnClue  = document.getElementById(`btn-clue-${id}`);
+  const btnGuess = document.getElementById(`btn-guess-${id}`);
+  const input    = document.getElementById(`input-${id}`);
+  const feedback = document.getElementById(`feedback-${id}`);
+
+  btnClue.addEventListener('click', () => {
+    const next = currentClues[id];
+    if (next < steps[id].clues.length) {
+      document.getElementById(`clue-${id}-${next}`).style.display = 'flex';
+      currentClues[id]++;
+      if (currentClues[id] >= steps[id].clues.length) btnClue.style.display = 'none';
+    }
+  });
+
+  function tryGuess() {
+    const val = input.value.trim();
+    if (!val) return;
+    if (checkAnswer(val, steps[id].accepted)) {
+      feedback.className = 'guess-feedback success';
+      feedback.textContent = '✨ Isso mesmo! Você descobriu!';
+      revealStep(id);
+    } else {
+      feedback.className = 'guess-feedback error';
+      feedback.textContent = 'Quase! Tente de novo...';
+      input.classList.remove('shake');
+      void input.offsetWidth;
+      input.classList.add('shake');
+    }
+  }
+
+  btnGuess.addEventListener('click', tryGuess);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') tryGuess(); });
+}
+
+// Montar DOM
+const container = document.getElementById('steps-container');
+const satSep = document.createElement('div');
+satSep.className = 'day-sep';
+satSep.innerHTML = `
+  <div class="day-sep-line"><div class="day-sep-icon">🥐</div></div>
+  <div class="day-sep-title">SÁBADO</div>
+  <p class="day-sep-msg">Quatro destinos. Quatro enigmas. Tudo começa aqui.</p>`;
+container.appendChild(satSep);
+
+steps.forEach(step => container.appendChild(renderStep(step)));
+showStep(0);
+
+// Confetti
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const colors = ['#c9a84c','#e8c97a','#f5e2a8','#c4728a','#e8a0b5','#ffffff'];
+  const pieces = Array.from({length: 80}, () => ({
+    x: Math.random() * canvas.width,
+    y: -10,
+    r: Math.random() * 6 + 3,
+    d: Math.random() * 40 + 10,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    tiltAngle: Math.random() * Math.PI,
+    tiltAngleInc: Math.random() * 0.07 + 0.05,
+    speed: Math.random() * 2 + 1
+  }));
+  let frame = 0;
+  const max = 120;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      ctx.beginPath();
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = Math.max(0, 1 - frame / max);
+      ctx.ellipse(p.x, p.y, p.r, p.r * 0.4, p.tiltAngle, 0, Math.PI * 2);
+      ctx.fill();
+      p.y += p.speed;
+      p.x += Math.sin(frame * 0.05 + p.d) * 1.5;
+      p.tiltAngle += p.tiltAngleInc;
+    });
+    frame++;
+    if (frame < max) requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  draw();
+}
+</script>
+</body>
+</html>
